@@ -1,5 +1,6 @@
 #include "wifi.h"
 
+// requires SECRET_SSID and SECRET_PSK defined in nanometer_secrets.h
 #include "nanometer_secrets.h"
 
 #include <Arduino.h>
@@ -39,6 +40,7 @@ void setup_wifi() {
       delay(1000);
     }
   }
+  set_wifi_lowPower();
   log_wifi();
 }
 
