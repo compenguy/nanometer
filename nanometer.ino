@@ -1,5 +1,5 @@
 
-
+#include "weact2p9_display.h"
 #include "wifi.h"
 #include "mqtt.h"
 #include "lsm6dsox_temp.h"
@@ -15,6 +15,7 @@ void setup() {
   Serial.begin(9600);
   while (!Serial)
     ;
+  setup_display();
   while (!setup_temp())
     ;
   while (!check_wifi_init())
@@ -49,6 +50,7 @@ void loop() {
     snprintf(textbuf, sizeof(textbuf), "IMU temperature: %d.%dC", temp_dC / 10, temp_dC % 10);
     Serial.println(textbuf);
     mqtt_publish_temp(temp_dC);
+    update_temperature(temp_dC, false);
   }
 
   // Wait until one minute has expired before the next reading
