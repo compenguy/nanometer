@@ -11,18 +11,22 @@ WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
 const char mqtt_broker[] = SECRET_MQTT_BROKER_URI;
-int        mqtt_port     = SECRET_MQTT_BROKER_PORT;
+int mqtt_port = SECRET_MQTT_BROKER_PORT;
 const char mqtt_user[] = SECRET_MQTT_USER;
 const char mqtt_pass[] = SECRET_MQTT_PASS;
-const char topic_temp[]  = "office_sensor/temperature_dC";
-const char topic_hum[]  = "office_sensor/humidity_pct";
+const char topic_temp[] = "office_sensor/temperature_dC";
+const char topic_hum[] = "office_sensor/humidity_pct";
 int32_t last_temp_dC = INT_MIN;
 
 void setup_mqtt() {
   mqttClient.setUsernamePassword(mqtt_user, mqtt_pass);
+  mqttClient.setId("nanometer");
+  Serial.println("Initializing mqtt connection");
   if (!mqttClient.connect(mqtt_broker, mqtt_port)) {
     Serial.print("MQTT connection failed! Error code = ");
     Serial.println(mqttClient.connectError());
+  } else {
+    Serial.println("MQTT connection completed");
   }
 }
 
