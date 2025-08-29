@@ -4,6 +4,8 @@
 #include <limits.h>
 #include <stdint.h>
 
+bool setup_temp();
+
 // get temperature in tenths of degrees C
 // if no temperature was available, returns INT_MIN
 int32_t get_temperature_dC();

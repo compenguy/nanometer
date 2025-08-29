@@ -3,6 +3,14 @@
 #include <Arduino.h>
 #include <Arduino_LSM6DSOX.h>
 
+bool setup_temp() {
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+    return false;
+  }
+  return true;
+}
+
 int32_t get_temperature_dC() {
   if (IMU.temperatureAvailable()) {
     float temp_C;
