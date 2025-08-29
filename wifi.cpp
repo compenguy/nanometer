@@ -20,10 +20,12 @@ bool check_wifi_init() {
     return false;
   }
 
-  if (!check_wifi_firmware()) {
-    Serial.println("WiFi firmware version out of date. Please upgrade.");
-    return false;
-  }
+  String version = WiFi.firmwareVersion();
+  Serial.print("WiFi firmware version: ");
+  Serial.println(version);
+  Serial.print("Latest firmware version: ");
+  Serial.println(WIFI_FIRMWARE_LATEST_VERSION);
+
   return true;
 }
 
@@ -34,9 +36,13 @@ void setup_wifi() {
     Serial.print("Initiating connection with ssid ");
     Serial.println(ssid);
 
+    WiFi.mode(WIFI_STA); // switch off AP
     status = WiFi.begin(ssid, psk);
+    Serial.print("WiFi status: ");
+    Serial.println(status);
     // Poll every second to see if we've connected, up to 10 seconds
     for (int i = 0; i < 10 && !check_wifi_connected(); i++) {
+      Serial.println("Waiting for wifi to come up");
       delay(1000);
     }
   }
@@ -53,11 +59,10 @@ void set_wifi_normalPower() {
 }
 
 bool check_wifi_present() {
-  return WiFi.status() == WL_NO_MODULE;
-}
-
-bool check_wifi_firmware() {
-  return WiFi.firmwareVersion() < WIFI_FIRMWARE_LATEST_VERSION;
+  int status = WiFi.status();
+  Serial.print("WiFi status: ");
+  Serial.println(status);
+  return status != WL_NO_MODULE;
 }
 
 bool check_wifi_failed() {
