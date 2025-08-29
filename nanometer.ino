@@ -12,10 +12,13 @@ const uint32_t interval = 60 * 1000;
 uint32_t previousMillis = 0;
 
 void setup() {
+  Serial.begin(9600);
+  while (!Serial)
+    ;
+  while (!setup_temp())
+    ;
   while (!check_wifi_init())
     ;
-  setup_wifi();
-  setup_mqtt();
 }
 
 void loop() {
@@ -24,25 +27,30 @@ void loop() {
   int32_t last_temp_dC = INT_MIN;
 
   while (!check_mqtt_connected()) {
+    Serial.println("mqtt not connected");
     while (!check_wifi_connected()) {
       snprintf(textbuf, sizeof(textbuf), "Lost WiFi connection (reason %d)", get_wifi_disconnectReason());
       Serial.println(textbuf);
       Serial.println("Reconnecting...");
       setup_wifi();
+      delay(1000);
     }
     setup_mqtt();
+    delay(1000);
   }
 
   // We want each iteration to take _interval_ amount of millis
   // start counting from now
   uint32_t previousMillis = millis();
   temp_dC = get_temperature_dC();
+  Serial.print("Temperature in deciCelsius: ");
+  Serial.println(temp_dC);
   if (temp_dC != INT_MIN && temp_dC != last_temp_dC) {
-    snprintf(textbuf, sizeof(textbuf), "IMU temperature: %ddC", temp_dC);
+    snprintf(textbuf, sizeof(textbuf), "IMU temperature: %d.%dC", temp_dC / 10, temp_dC % 10);
     Serial.println(textbuf);
     mqtt_publish_temp(temp_dC);
   }
-  
+
   // Wait until one minute has expired before the next reading
   uint32_t currentMillis = millis();
   uint32_t elapsedMillis = currentMillis - previousMillis;
