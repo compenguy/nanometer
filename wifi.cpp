@@ -36,7 +36,6 @@ void setup_wifi() {
     Serial.print("Initiating connection with ssid ");
     Serial.println(ssid);
 
-    WiFi.mode(WIFI_STA); // switch off AP
     status = WiFi.begin(ssid, psk);
     Serial.print("WiFi status: ");
     Serial.println(status);
