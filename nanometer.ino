@@ -15,11 +15,13 @@ void setup() {
   Serial.begin(9600);
   while (!Serial)
     ;
-  setup_display();
   while (!setup_temp())
-    ;
+    delay(1000);
+
+  setup_display();
+
   while (!check_wifi_init())
-    ;
+    delay(1000);
 }
 
 void loop() {

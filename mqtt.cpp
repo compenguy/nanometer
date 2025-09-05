@@ -21,12 +21,12 @@ int32_t last_temp_dC = INT_MIN;
 void setup_mqtt() {
   mqttClient.setUsernamePassword(mqtt_user, mqtt_pass);
   mqttClient.setId("nanometer");
-  Serial.println("Initializing mqtt connection");
+  Serial.println("[mqtt   ] Initializing connection");
   if (!mqttClient.connect(mqtt_broker, mqtt_port)) {
-    Serial.print("MQTT connection failed! Error code = ");
+    Serial.print("[mqtt   ] connection failed! Error code = ");
     Serial.println(mqttClient.connectError());
   } else {
-    Serial.println("MQTT connection completed");
+    Serial.println("[mqtt   ] connection completed");
   }
 }
 
@@ -40,7 +40,7 @@ void mqtt_publish_temp(int32_t new_temp_dC) {
     mqttClient.beginMessage(topic_temp);
     mqttClient.print(new_temp_dC);
     mqttClient.endMessage();
-    Serial.print("Published new value ");
+    Serial.print("[mqtt   ] Published new value ");
     Serial.print(new_temp_dC);
     Serial.print(" to topic ");
     Serial.println(topic_temp);

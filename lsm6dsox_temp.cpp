@@ -5,7 +5,7 @@
 
 bool setup_temp() {
   if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
+    Serial.println("[temp   ] Failed to initialize IMU!");
     return false;
   }
   return true;

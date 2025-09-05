@@ -16,14 +16,14 @@ static bool check_wifi_firmware();
 
 bool check_wifi_init() {
   if (!check_wifi_present()) {
-    Serial.println("Communication with WiFi module failed!");
+    Serial.println("[wifi   ] Communication with WiFi module failed!");
     return false;
   }
 
   String version = WiFi.firmwareVersion();
-  Serial.print("WiFi firmware version: ");
+  Serial.print("[wifi   ] firmware version: ");
   Serial.println(version);
-  Serial.print("Latest firmware version: ");
+  Serial.print("[wifi   ] Latest firmware version: ");
   Serial.println(WIFI_FIRMWARE_LATEST_VERSION);
 
   return true;
@@ -33,15 +33,15 @@ void setup_wifi() {
   int status = WL_IDLE_STATUS;  // wifi radio status
 
   while (!check_wifi_connected()) {
-    Serial.print("Initiating connection with ssid ");
+    Serial.print("[wifi   ] Initiating connection with ssid ");
     Serial.println(ssid);
 
     status = WiFi.begin(ssid, psk);
-    Serial.print("WiFi status: ");
+    Serial.print("[wifi   ] WiFi status: ");
     Serial.println(status);
     // Poll every second to see if we've connected, up to 10 seconds
     for (int i = 0; i < 10 && !check_wifi_connected(); i++) {
-      Serial.println("Waiting for wifi to come up");
+      Serial.println("[wifi   ] Waiting for wifi to come up");
       delay(1000);
     }
   }
@@ -59,7 +59,7 @@ void set_wifi_normalPower() {
 
 bool check_wifi_present() {
   int status = WiFi.status();
-  Serial.print("WiFi status: ");
+  Serial.print("[wifi   ] WiFi status: ");
   Serial.println(status);
   return status != WL_NO_MODULE;
 }
@@ -85,10 +85,10 @@ uint32_t get_wifi_unixEpochTime() {
 }
 
 void log_wifi() {
-  Serial.print("SSID: ");
+  Serial.print("[wifi   ] SSID: ");
   Serial.println(WiFi.SSID());
-  Serial.print("IP Address: ");
+  Serial.print("[wifi   ] IP Address: ");
   Serial.println(WiFi.localIP());
-  Serial.print("RSSI: ");
+  Serial.print("[wifi   ] RSSI: ");
   Serial.println(WiFi.RSSI());
 }
