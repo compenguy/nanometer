@@ -4,6 +4,6 @@
 #include <stdint.h>
 
 void setup_display();
-void update_temperature(int32_t dC, bool fahrenheit);
+void update_temperature(int32_t newDeciC);
 
 #endif  // __MQTT_H__
